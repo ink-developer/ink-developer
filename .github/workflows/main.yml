@@ -2,8 +2,11 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # каждый день в полночь (UTC)
+    - cron: "0 0 * * *"  # запуск каждый день в полночь (UTC)
   workflow_dispatch:      # запуск вручную
+  push:                   # запуск при пуше
+    branches:
+      - main              # только при пушах в main
 
 jobs:
   build:
