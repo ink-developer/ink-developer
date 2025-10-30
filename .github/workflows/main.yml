@@ -20,13 +20,13 @@ jobs:
         uses: Platane/snk@v3
         with:
           github_user_name: ${{ github.repository_owner }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           outputs: |
             dist/snake.svg
-          color_snake: '#00FF00'    # цвет змейки
-          color_dots: '#222222'     # цвет точек коммитов
-          color_empty: '#111111'    # цвет пустых клеток (тёмный)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          args: >
+            --color-snake "#00FF00"
+            --color-dots "#222222"
+            --color-empty "#111111"
       - name: Commit and push generated snake
         uses: EndBug/add-and-commit@v9
         with:
