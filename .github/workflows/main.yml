@@ -1,1 +1,29 @@
+name: Generate Snake
 
+on:
+  schedule:
+    - cron: "0 0 * * *"  # каждый день в полночь (UTC)
+  workflow_dispatch:      # запуск вручную
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate Snake SVG
+        uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake.svg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push generated snake
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "dist/snake.svg"
+          message: "chore: update snake animation"
