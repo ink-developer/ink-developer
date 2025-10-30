@@ -2,16 +2,15 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # запуск каждый день в полночь (UTC)
-  workflow_dispatch:      # запуск вручную
-  push:                   # запуск при пуше
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
     branches:
-      - main              # только при пушах в main
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -21,10 +20,13 @@ jobs:
         with:
           github_user_name: ${{ github.repository_owner }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          outputs: dist/snake.svg
-          args: "--color-snake '#00FF00' --color-dots '#222222' --color-empty '#111111'"
+          outputs: |
+            dist/snake.svg
+            dist/snake-dark.svg?palette=github-dark
+            dist/snake-custom.svg?color_snake=lime&color_dots=#111111,#333333,#555555,#777777,#999999&color_empty=#111111
+
       - name: Commit and push generated snake
         uses: EndBug/add-and-commit@v9
         with:
-          add: "dist/snake.svg"
+          add: "dist/*.svg"
           message: "chore: update snake animation"
